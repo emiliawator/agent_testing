@@ -1,0 +1,44 @@
+#!/bin/vbash
+source /opt/vyatta/etc/functions/script-template
+configure
+
+set vpn ipsec ike-group IKEv2_DEFAULT close-action ‘none’
+#set vpn ipsec ike-group IKEv2_DEFAULT ikev2-reauth ‘no’
+set vpn ipsec ike-group IKEv2_DEFAULT key-exchange ‘ikev2’
+set vpn ipsec ike-group IKEv2_DEFAULT lifetime ‘21600’
+set vpn ipsec ike-group IKEv2_DEFAULT proposal 10 dh-group ’14’
+set vpn ipsec ike-group IKEv2_DEFAULT proposal 10 encryption ‘aes256’
+set vpn ipsec ike-group IKEv2_DEFAULT proposal 10 hash ‘sha256’
+
+#set vpn ipsec esp-group ESP_DEFAULT compression ‘disable’
+set vpn ipsec esp-group ESP_DEFAULT lifetime ‘21600’
+set vpn ipsec esp-group ESP_DEFAULT mode ‘tunnel’
+set vpn ipsec esp-group ESP_DEFAULT pfs ‘dh-group14’
+set vpn ipsec esp-group ESP_DEFAULT proposal 10 encryption ‘aes256’
+set vpn ipsec esp-group ESP_DEFAULT proposal 10 hash ‘sha256’
+
+set vpn ipsec interface 'eth3'
+
+set vpn ipsec site-to-site peer OFFICE-B authentication id ‘192.168.0.1’
+
+set vpn ipsec site-to-site peer OFFICE-B authentication mode ‘pre-shared-secret’
+set vpn ipsec site-to-site peer OFFICE-B authentication pre-shared-secret 'secret'
+
+set vpn ipsec site-to-site peer OFFICE-B authentication remote-id 192.168.50.1
+
+set vpn ipsec site-to-site peer OFFICE-B connection-type ‘initiate’
+
+set vpn ipsec site-to-site peer OFFICE-B ike-group ‘IKEv2_DEFAULT’
+
+set vpn ipsec site-to-site peer OFFICE-B local-address ‘192.168.0.1’
+
+set interfaces vti vti12 address ‘10.10.0.0/16’
+
+set vpn ipsec site-to-site peer OFFICE-B vti bind ‘vti12’
+set vpn ipsec site-to-site peer OFFICE-B vti esp-group ‘ESP_DEFAULT’
+
+set protocols bgp 3 neighbor 10.20.20.1 remote-as ‘1’
+set protocols bgp 3 neighbor 10.20.20.1 update-source ‘vti12’
+
+commit 
+exit
