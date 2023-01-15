@@ -16,10 +16,10 @@ set vpn ipsec interface 'eth2'
 set vpn ipsec site-to-site peer OFFICE-A authentication mode 'pre-shared-secret'
 set vpn ipsec site-to-site peer OFFICE-A authentication pre-shared-secret 'SomePreSharedKey'
 
-set vpn ipsec site-to-site peer OFFICE-A authentication remote-id '198.168.0.1'
+#set vpn ipsec site-to-site peer OFFICE-A authentication remote-id '198.168.0.1'
 set vpn ipsec site-to-site peer OFFICE-A ike-group 'office-srv-ike'
-set vpn ipsec site-to-site peer OFFICE-A local-address 192.168.50.1
-set vpn ipsec site-to-site peer OFFICE-A remote-address '198.168.0.1'
+set vpn ipsec site-to-site peer OFFICE-A local-address '10.10.10.1'
+set vpn ipsec site-to-site peer OFFICE-A remote-address '10.10.20.1'
 set vpn ipsec site-to-site peer OFFICE-A tunnel 0 esp-group 'office-srv-esp'
 set vpn ipsec site-to-site peer OFFICE-A tunnel 0 local prefix '10.20.20.0/24'
 set vpn ipsec site-to-site peer OFFICE-A tunnel 0 remote prefix '10.10.0.0/16'
