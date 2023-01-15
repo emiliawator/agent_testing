@@ -1,3 +1,7 @@
+#!/bin/vbash
+source /opt/vyatta/etc/functions/script-template
+configure
+
 set vpn ipsec esp-group office-srv-esp lifetime '1800'
 set vpn ipsec esp-group office-srv-esp mode 'tunnel'
 set vpn ipsec esp-group office-srv-esp pfs 'enable'
@@ -19,3 +23,8 @@ set vpn ipsec site-to-site peer OFFICE-A remote-address '198.168.0.1'
 set vpn ipsec site-to-site peer OFFICE-A tunnel 0 esp-group 'office-srv-esp'
 set vpn ipsec site-to-site peer OFFICE-A tunnel 0 local prefix '10.20.20.0/24'
 set vpn ipsec site-to-site peer OFFICE-A tunnel 0 remote prefix '10.10.0.0/16'
+
+
+commit
+
+exit
